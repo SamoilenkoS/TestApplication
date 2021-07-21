@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -17,36 +18,36 @@ namespace WebApplication2.Controllers
             _weatherForecastService = weatherForecastService;
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public Guid PostSomething(WeatherForecast weatherForecast)
         {
            return _weatherForecastService.AddWeatherForecast(weatherForecast);
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             return _weatherForecastService.GetAll();
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public WeatherForecast GetById(Guid id)
         {
             return _weatherForecastService.GetById(id);
         }
 
-        //[Authorize(Roles = "Administrator")]
-        //[Authorize(Roles = "Forecaster")]
+        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Forecaster")]
         [HttpPut]
         public WeatherForecast Update(WeatherForecast objToUpdate)
         {
             return _weatherForecastService.Update(objToUpdate);
         }
 
-        //[Authorize(Roles = "Administrator,Forecaster")]
+        [Authorize(Roles = "Administrator,Forecaster")]
         [HttpDelete("{id}")]
         public bool Remove(Guid id)
         {

@@ -1,8 +1,8 @@
 ﻿using BussinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
+using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BussinessLayer.Services
 {
@@ -13,6 +13,11 @@ namespace BussinessLayer.Services
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public User GetUserByLoginAndPassword(AuthenticationModel authenticationModel)
+        {
+            return _userRepository.GetUserByAuthData(authenticationModel);
         }
 
         public IEnumerable<string> GetUserRolesById(Guid userId)

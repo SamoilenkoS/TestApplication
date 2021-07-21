@@ -24,7 +24,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<string> GetUserRolesById(Guid userId)
         {
-            if(_usersWithRoles == null)
+            if (_usersWithRoles == null)
             {
                 _usersWithRoles = GetAllUserRoles();
             }
@@ -33,24 +33,32 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefault(x => x.UserId == userId)?.Roles;
         }
 
+        public User GetUserByAuthData(AuthenticationModel authenticationModel)
+        {
+            return _dbContext.Users
+                .FirstOrDefault(x =>
+                x.Login == authenticationModel.Login &&
+                x.Password == authenticationModel.Password);
+        }
+
         private IEnumerable<UserWithRoles> GetAllUserRoles()
         {
             var items = (from user in _dbContext.Set<User>()
-                 join userRole in _dbContext.Set<UserRoles>()
-                    on user.Id equals userRole.UserId
-                 join role in _dbContext.Set<RoleEntity>()
-                    on userRole.RoleId equals role.Id
-                 select new UserWithRole
-                 {
-                     Role = role.Role,
-                     UserId = user.Id
-                 }).ToList();
+                         join userRole in _dbContext.Set<UserRoles>()
+                            on user.Id equals userRole.UserId
+                         join role in _dbContext.Set<RoleEntity>()
+                            on userRole.RoleId equals role.Id
+                         select new
+                         {
+                             role.Role,
+                             UserId = user.Id
+                         }).ToList();
 
             return items.GroupBy(x => x.UserId)
                 .Select(x => new UserWithRoles
                 {
-                    UserId= x.Key,
-                    Roles = x.ToList().Select(x=>x.Role)
+                    UserId = x.Key,
+                    Roles = x.ToList().Select(x => x.Role)
                 });
         }
     }

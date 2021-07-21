@@ -58,6 +58,10 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="GetAllUserRoles.sql" />
+    <Build Include="Roles.sql" />
+    <Build Include="UserRoles.sql" />
+    <Build Include="Users.sql" />
     <Build Include="WeatherForecasts.sql" />
   </ItemGroup>
 </Project>

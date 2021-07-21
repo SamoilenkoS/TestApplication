@@ -1,28 +1,39 @@
-﻿using BussinessLayer.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using BussinessLayer.JWT;
+using BussinessLayer.JWT.Services;
+using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly AuthService _authService;
+        private readonly ISessionService _sessionService;
 
-        public UsersController(IUserService userService)
+        public UsersController(AuthService authService, ISessionService sessionService)
         {
-            _userService = userService;
+            _authService = authService;
+            _sessionService = sessionService;
         }
 
-        [HttpGet]
-        public IEnumerable<string> GetRoles()
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public string Login(AuthenticationModel authenticationModel)
         {
-            return _userService.GetUserRolesById(Guid.NewGuid());
+            var validationResult = _authService.Login(authenticationModel);
+
+            if (validationResult.IsSuccessful == false)
+            {
+                BadRequest("Uncorrect login or password");
+            }
+
+            var token = _sessionService.CreateAuthToken(validationResult.UserWithRoles);
+
+            return token;
         }
     }
 }
