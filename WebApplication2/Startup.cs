@@ -1,5 +1,9 @@
 using BussinessLayer;
+using BussinessLayer.Interfaces;
+using BussinessLayer.Services;
 using DataAccessLayer;
+using DataAccessLayer.Interfaces;
+using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +28,8 @@ namespace WebApplication2
         {
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
             services.AddScoped<IWeatherForecastRepository, WeatherForecastRepositoryEFCore>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddControllers();
 
@@ -35,6 +41,12 @@ namespace WebApplication2
             services.AddAutoMapper(assemblies);
             services.AddDbContext<EFCoreContext>(options
                 => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("RequireAdministratorRole",
+            //         policy => policy.RequireRole("Administrator"));
+            //});
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

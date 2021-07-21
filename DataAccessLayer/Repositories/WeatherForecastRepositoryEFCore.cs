@@ -6,7 +6,7 @@ namespace DataAccessLayer
 {
     public class WeatherForecastRepositoryEFCore : IWeatherForecastRepository
     {
-        private EFCoreContext _dbContext;
+        private readonly EFCoreContext _dbContext;
         public WeatherForecastRepositoryEFCore(EFCoreContext dbContext)
         {
             _dbContext = dbContext;
