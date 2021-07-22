@@ -30,7 +30,7 @@ namespace DataAccessLayer.Repositories
             }
 
             return _usersWithRoles
-                .FirstOrDefault(x => x.UserId == userId)?.Roles;
+                .FirstOrDefault(x => x.UserId == userId)?.Roles ?? new List<string>();
         }
 
         public User GetUserByAuthData(AuthenticationModel authenticationModel)
@@ -60,6 +60,14 @@ namespace DataAccessLayer.Repositories
                     UserId = x.Key,
                     Roles = x.ToList().Select(x => x.Role)
                 });
+        }
+
+        public bool RegisterUser(User userToRegister)
+        {
+            _dbContext.Users.Add(userToRegister);
+            _dbContext.SaveChanges();
+
+            return true;
         }
     }
 }

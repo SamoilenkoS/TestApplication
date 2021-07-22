@@ -8,5 +8,6 @@ namespace BussinessLayer.Interfaces
     {
         IEnumerable<string> GetUserRolesById(Guid userId);
         User GetUserByLoginAndPassword(AuthenticationModel authenticationModel);
+        bool RegisterUser(User userToRegister);
     }
 }

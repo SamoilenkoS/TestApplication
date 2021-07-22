@@ -2,6 +2,7 @@ using BussinessLayer;
 using BussinessLayer.Interfaces;
 using BussinessLayer.JWT;
 using BussinessLayer.JWT.Services;
+using BussinessLayer.Models;
 using BussinessLayer.Services;
 using DataAccessLayer;
 using DataAccessLayer.Interfaces;
@@ -37,6 +38,11 @@ namespace WebApplication2
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<AuthService, AuthService>();
             services.AddScoped<ISessionService, SessionService>();
+
+            var hashSettings = Configuration.GetSection("HashSettings");
+            services.Configure<HashSettings>(hashSettings);
+
+            services.AddScoped<IHashService, HashService>();
 
             services.AddControllers();
 

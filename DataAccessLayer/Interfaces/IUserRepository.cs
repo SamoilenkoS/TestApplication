@@ -8,5 +8,6 @@ namespace DataAccessLayer.Interfaces
     {
         IEnumerable<string> GetUserRolesById(Guid userId);
         User GetUserByAuthData(AuthenticationModel authenticationModel);
+        bool RegisterUser(User userToRegister);
     }
 }

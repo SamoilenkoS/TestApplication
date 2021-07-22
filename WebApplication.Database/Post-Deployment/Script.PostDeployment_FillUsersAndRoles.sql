@@ -11,15 +11,15 @@ Post-Deployment Script Template
 */
 DECLARE @adminId UNIQUEIDENTIFIER = NEWID()
 INSERT INTO Users
-VALUES (@adminId, 'Admin', 'Alexandr', 'Brulov', '1970-03-02', 'StrongPass');
+VALUES (@adminId, 'Admin', 'Alexandr', 'Brulov', '1970-03-02', 'nAmXe6fEw67i35vHRcLc1S7tFqMxT3yBe7QHpAzxoAw=');
 
 DECLARE @forecasterId UNIQUEIDENTIFIER = NEWID()
 INSERT INTO Users
-VALUES (@forecasterId, 'Forecaster', 'Vasya', 'Pupkin', '1990-05-04', 'StrongPass');
+VALUES (@forecasterId, 'Forecaster', 'Vasya', 'Pupkin', '1990-05-04', 'nAmXe6fEw67i35vHRcLc1S7tFqMxT3yBe7QHpAzxoAw=');
 
 DECLARE @adminForecasterId UNIQUEIDENTIFIER = NEWID()
 INSERT INTO Users
-VALUES (@adminForecasterId, 'AdminForecaster', 'Izya', 'Fomin', '1995-12-03', 'StrongPass');
+VALUES (@adminForecasterId, 'AdminForecaster', 'Izya', 'Fomin', '1995-12-03', 'nAmXe6fEw67i35vHRcLc1S7tFqMxT3yBe7QHpAzxoAw=');
 
 
 DECLARE @adminRoleId UNIQUEIDENTIFIER = NEWID()

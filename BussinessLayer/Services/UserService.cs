@@ -24,5 +24,20 @@ namespace BussinessLayer.Services
         {
             return _userRepository.GetUserRolesById(userId);
         }
+
+        public bool RegisterUser(User userToRegister)
+        {
+            try
+            {
+                userToRegister.Id = Guid.NewGuid();
+                _userRepository.RegisterUser(userToRegister);
+
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
     }
 }
