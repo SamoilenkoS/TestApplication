@@ -24,11 +24,11 @@ VALUES (@adminForecasterId, 'AdminForecaster', 'Izya', 'Fomin', '1995-12-03', 'S
 
 DECLARE @adminRoleId UNIQUEIDENTIFIER = NEWID()
 INSERT INTO Roles
-VALUES (@adminRoleId, 'Forecaster')
+VALUES (@adminRoleId, 'Administrator')
 
 DECLARE @forecasterRoleId UNIQUEIDENTIFIER = NEWID()
 INSERT INTO Roles
-VALUES (@forecasterRoleId, 'Administrator')
+VALUES (@forecasterRoleId, 'Forecaster')
 
 
 INSERT INTO UserRoles

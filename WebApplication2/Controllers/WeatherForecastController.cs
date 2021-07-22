@@ -18,7 +18,6 @@ namespace WebApplication2.Controllers
             _weatherForecastService = weatherForecastService;
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public Guid PostSomething(WeatherForecast weatherForecast)
         {
