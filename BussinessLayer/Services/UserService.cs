@@ -1,4 +1,5 @@
-﻿using BussinessLayer.Interfaces;
+﻿using AutoMapper;
+using BussinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
@@ -9,23 +10,21 @@ namespace BussinessLayer.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public User GetUserByLoginAndPassword(AuthenticationModel authenticationModel)
-        {
-            return _userRepository.GetUserByAuthData(authenticationModel);
-        }
+            => _mapper.Map<User>(_userRepository.GetUserByAuthData(authenticationModel));
 
         public IEnumerable<string> GetUserRolesById(Guid userId)
-        {
-            return _userRepository.GetUserRolesById(userId);
-        }
+            => _userRepository.GetUserRolesById(userId);
 
-        public bool RegisterUser(User userToRegister)
+        public bool RegisterUser(UserDTO userToRegister)
         {
             try
             {
@@ -34,7 +33,7 @@ namespace BussinessLayer.Services
 
                 return true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return false;
             }

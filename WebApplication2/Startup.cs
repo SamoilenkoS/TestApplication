@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using WebApplication;
 
 namespace WebApplication2
 {
@@ -32,17 +33,10 @@ namespace WebApplication2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)////
         {
-            services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-            services.AddScoped<IWeatherForecastRepository, WeatherForecastRepositoryEFCore>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<AuthService, AuthService>();
-            services.AddScoped<ISessionService, SessionService>();
+            services.RegisterServices();
 
             var hashSettings = Configuration.GetSection("HashSettings");
             services.Configure<HashSettings>(hashSettings);
-
-            services.AddScoped<IHashService, HashService>();
 
             services.AddControllers();
 
@@ -52,6 +46,7 @@ namespace WebApplication2
             };
 
             services.AddAutoMapper(assemblies);
+
             services.AddDbContext<EFCoreContext>(options
                 => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -59,25 +54,8 @@ namespace WebApplication2
             services.Configure<AppSettings>(appSettingsSection);
 
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(auth =>
-            {
-                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
-                };
-            });
 
+            services.AddAuthentication(appSettings);
             services.AddAuthorization();
         }
 

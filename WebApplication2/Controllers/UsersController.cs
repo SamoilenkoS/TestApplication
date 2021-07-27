@@ -11,10 +11,10 @@ namespace WebApplication2.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly ISessionService _sessionService;
 
-        public UsersController(AuthService authService, ISessionService sessionService)
+        public UsersController(IAuthService authService, ISessionService sessionService)
         {
             _authService = authService;
             _sessionService = sessionService;
@@ -39,21 +39,20 @@ namespace WebApplication2.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public string Register(User userToRegister)
+        public IActionResult Register(User userToRegister)
         {
-            var registered = _authService.Register(userToRegister);
+            var registered = _authService.RegisterUser(userToRegister);
             
             if (registered)
             {
-                return Login(new AuthenticationModel
+                return Ok(Login(new AuthenticationModel
                 {
                     Login = userToRegister.Login,
                     Password = userToRegister.Password
-                });
+                }));
             }
 
-            BadRequest("Invalid registration data");
-            return string.Empty;
+            return BadRequest("Invalid registration data");
         }
     }
 }

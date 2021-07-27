@@ -8,17 +8,17 @@ namespace BussinessLayer
         public WeatherForecastProfile()
         {
             CreateMap<WeatherForecast, WeatherForecastDTO>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(x => x.Date, opt => opt.MapFrom(src => src.Date))
-                .ForMember(x => x.Summary, opt => opt.MapFrom(src => src.Summary))
-                .ForMember(x => x.Temperature, opt => opt.MapFrom(src => src.TemperatureC));
+                .ForMember(x => x.Id, options => options.MapFrom(src => src.Id))
+                .ForMember(x => x.Date, options => options.MapFrom(src => src.Date))
+                .ForMember(x => x.Summary, options => options.MapFrom(src => src.Summary))
+                .ForMember(x => x.Temperature, options => options.MapFrom(src => src.TemperatureC));
 
             CreateMap<WeatherForecastDTO, WeatherForecast>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(x => x.Date, opt => opt.MapFrom(src => src.Date))
-                .ForMember(x => x.Summary, opt => opt.MapFrom(src => src.Summary))
-                .ForMember(x => x.TemperatureC, opt => opt.MapFrom(src => src.Temperature))
-                .ForMember(x => x.TemperatureF, opt => opt.MapFrom(src => src.Temperature * 2));
+                .ForMember(x => x.Id, options => options.MapFrom(src => src.Id))
+                .ForMember(x => x.Date, options => options.MapFrom(src => src.Date))
+                .ForMember(x => x.Summary, options => options.MapFrom(src => src.Summary))
+                .ForMember(x => x.TemperatureC, options => options.MapFrom(src => src.Temperature))
+                .ForMember(x => x.TemperatureF, options => options.MapFrom(src => src.Temperature * 2));
         }
     }
 }

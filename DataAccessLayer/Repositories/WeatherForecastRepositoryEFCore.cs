@@ -7,6 +7,7 @@ namespace DataAccessLayer
     public class WeatherForecastRepositoryEFCore : IWeatherForecastRepository
     {
         private readonly EFCoreContext _dbContext;
+
         public WeatherForecastRepositoryEFCore(EFCoreContext dbContext)
         {
             _dbContext = dbContext;
@@ -45,17 +46,10 @@ namespace DataAccessLayer
 
         public WeatherForecastDTO Update(WeatherForecastDTO weatherForecast)
         {
-            var entity = GetById(weatherForecast.Id);
-            if(entity != null)
-            {
-                entity.Temperature = weatherForecast.Temperature;
-                entity.Date = weatherForecast.Date;
-                entity.Summary = weatherForecast.Summary;
+            _dbContext.Update(weatherForecast);
+            _dbContext.SaveChanges();
 
-                _dbContext.SaveChanges();
-            }
-
-            return entity;
+            return weatherForecast;
         }
     }
 }

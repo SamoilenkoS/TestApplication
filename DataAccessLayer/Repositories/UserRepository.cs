@@ -8,14 +8,9 @@ namespace DataAccessLayer.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private class UserWithRoles
-        {
-            public Guid UserId { get; set; }
-            public IEnumerable<string> Roles { get; set; }
-        }
+        private static IList<UserWithRoles> _usersWithRoles;
 
         private readonly EFCoreContext _dbContext;
-        private IEnumerable<UserWithRoles> _usersWithRoles;
 
         public UserRepository(EFCoreContext dbContext)
         {
@@ -33,7 +28,7 @@ namespace DataAccessLayer.Repositories
                 .FirstOrDefault(x => x.UserId == userId)?.Roles ?? new List<string>();
         }
 
-        public User GetUserByAuthData(AuthenticationModel authenticationModel)
+        public UserDTO GetUserByAuthData(AuthenticationModel authenticationModel)
         {
             return _dbContext.Users
                 .FirstOrDefault(x =>
@@ -41,9 +36,19 @@ namespace DataAccessLayer.Repositories
                 x.Password == authenticationModel.Password);
         }
 
-        private IEnumerable<UserWithRoles> GetAllUserRoles()
+        public bool RegisterUser(UserDTO userToRegister)
         {
-            var items = (from user in _dbContext.Set<User>()
+            _dbContext.Users.Add(userToRegister);
+            _dbContext.SaveChanges();
+
+            AddUserWithEmptyRoles(userToRegister.Id);
+
+            return true;
+        }
+
+        private IList<UserWithRoles> GetAllUserRoles()
+        {
+            var items = (from user in _dbContext.Set<UserDTO>()
                          join userRole in _dbContext.Set<UserRoles>()
                             on user.Id equals userRole.UserId
                          join role in _dbContext.Set<RoleEntity>()
@@ -59,15 +64,16 @@ namespace DataAccessLayer.Repositories
                 {
                     UserId = x.Key,
                     Roles = x.ToList().Select(x => x.Role)
-                });
+                }).ToList();
         }
 
-        public bool RegisterUser(User userToRegister)
+        private static void AddUserWithEmptyRoles(Guid userId)
         {
-            _dbContext.Users.Add(userToRegister);
-            _dbContext.SaveChanges();
-
-            return true;
+            _usersWithRoles.Add(new UserWithRoles
+            {
+                Roles = new List<string>(),
+                UserId = userId
+            });
         }
     }
 }

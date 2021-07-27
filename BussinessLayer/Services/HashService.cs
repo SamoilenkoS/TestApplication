@@ -24,8 +24,5 @@ namespace BussinessLayer.Services
                 iterationCount: _hashSettings.IterationCount,
                 numBytesRequested: _hashSettings.NumberBytesRequested));
         }
-
-        public bool ValidateHash(string hashedString, string stringToHash)
-            => string.Equals(HashString(stringToHash), hashedString);
     }
 }
