@@ -67,8 +67,13 @@ namespace DataAccessLayer.Repositories
                 }).ToList();
         }
 
-        private static void AddUserWithEmptyRoles(Guid userId)
+        private void AddUserWithEmptyRoles(Guid userId)
         {
+            if (_usersWithRoles == null)
+            {
+                _usersWithRoles = GetAllUserRoles();
+            }
+
             _usersWithRoles.Add(new UserWithRoles
             {
                 Roles = new List<string>(),

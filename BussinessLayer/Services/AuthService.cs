@@ -53,9 +53,15 @@ namespace BussinessLayer.JWT.Services
             var userDTO = _mapper.Map<UserDTO>(userToRegister);
             userDTO.Password = _hashService.HashString(userToRegister.Password);
 
-            var response = _userService.RegisterUser(userDTO);
+            var isRegistrationSuccessful = _userService.RegisterUser(userDTO);
 
-            return response;
+            if (isRegistrationSuccessful &&
+                !string.IsNullOrEmpty(userToRegister.Email))
+            {
+                _userService.AddUserMail(userDTO.Id, userToRegister.Email);
+            }
+
+            return isRegistrationSuccessful;
         }
 
         private bool IsPasswordValid(string password)

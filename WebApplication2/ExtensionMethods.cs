@@ -24,6 +24,9 @@ namespace WebApplication
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IMailExchangerService, MailExchangerService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IMailRepository, MailRepository>();
         }
 
         public static void AddAuthentication(this IServiceCollection services, AppSettings appSettings)

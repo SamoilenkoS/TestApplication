@@ -42,7 +42,7 @@ namespace WebApplication2.Controllers
         public IActionResult Register(User userToRegister)
         {
             var registered = _authService.RegisterUser(userToRegister);
-            
+
             if (registered)
             {
                 return Ok(Login(new AuthenticationModel
