@@ -21,6 +21,11 @@ namespace BussinessLayer.JWT.Services
             _mapper = mapper;
         }
 
+        public bool ConfirmEmail(string message)
+        {
+            return _userService.ConfirmEmail(message);
+        }
+
         public ValidationResult Login(AuthenticationModel authenticationModel)
         {
             var hashedPassword = _hashService.HashString(authenticationModel.Password);

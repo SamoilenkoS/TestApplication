@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BussinessLayer.Helpers;
 using BussinessLayer.Interfaces;
+using BussinessLayer.Models;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace BussinessLayer.Services
 {
@@ -50,11 +52,17 @@ namespace BussinessLayer.Services
 
         public void AddUserMail(Guid userId, string mail)
         {
-            var confirmationMessage = StringGenerator.GenerateString();
+            var confirmationModel = new ConfirmationMessageModel
+            {
+                ConfirmationMessage = StringGenerator.GenerateString(),
+                UserId = userId
+            };
+            var modelToSerialize = JsonSerializer.Serialize(confirmationModel);
+            var messageToSend = EncryptionHelper.Encrypt(modelToSerialize);
 
             _mailService.SaveMailAddress(new EmailDTO
             {
-                ConfirmationMessage = confirmationMessage,
+                ConfirmationMessage = confirmationModel.ConfirmationMessage,
                 Email = mail,
                 IsConfirmed = false,
                 UserId = userId
@@ -63,7 +71,14 @@ namespace BussinessLayer.Services
             _mailExchangerService.SendMessage(
                 mail,
                 "Email confirmation",
-                confirmationMessage);
+                $"http://localhost:5000/users/confirm?message={messageToSend}");
+        }
+
+        public bool ConfirmEmail(string message)
+        {
+            var decrypted = EncryptionHelper.Decrypt(message);
+            var model = JsonSerializer.Deserialize<ConfirmationMessageModel>(decrypted);
+            return _mailService.ConfirmMail(model);
         }
     }
 }

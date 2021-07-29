@@ -54,5 +54,13 @@ namespace WebApplication2.Controllers
 
             return BadRequest("Invalid registration data");
         }
+
+        [AllowAnonymous]
+        [HttpGet("confirm")]
+        public IActionResult Confirm(string message)
+        {
+            var result = _authService.ConfirmEmail(message);
+            return Ok(result);
+        }
     }
 }

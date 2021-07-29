@@ -6,5 +6,6 @@ namespace BussinessLayer.JWT.Services
     {
         ValidationResult Login(AuthenticationModel authenticationModel);
         bool RegisterUser(User userToRegister);
+        bool ConfirmEmail(string message);
     }
 }

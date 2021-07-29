@@ -10,5 +10,6 @@ namespace BussinessLayer.Interfaces
         User GetUserByLoginAndPassword(AuthenticationModel authenticationModel);
         bool RegisterUser(UserDTO userToRegister);
         void AddUserMail(Guid userId, string mail);
+        bool ConfirmEmail(string message);
     }
 }

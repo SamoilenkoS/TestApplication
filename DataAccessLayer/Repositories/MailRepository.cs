@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
+using System.Linq;
 
 namespace DataAccessLayer.Repositories
 {
@@ -9,6 +10,21 @@ namespace DataAccessLayer.Repositories
         public MailRepository(EFCoreContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public bool ConfirmMail(EmailDTO email)
+        {
+            var entity = _dbContext.Emails.Where(x =>
+                x.UserId == email.UserId && 
+                x.ConfirmationMessage == email.ConfirmationMessage).FirstOrDefault();
+
+            if (entity != null)
+            {
+                entity.IsConfirmed = true;
+                _dbContext.SaveChanges();
+            }
+
+            return entity != null;
         }
 
         public void SaveMail(EmailDTO email)
