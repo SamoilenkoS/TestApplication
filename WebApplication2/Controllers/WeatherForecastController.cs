@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using BussinessLayer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -22,24 +24,29 @@ namespace WebApplication2.Controllers
            return _weatherForecastService.AddWeatherForecast(weatherForecast);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             return _weatherForecastService.GetAll();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public WeatherForecast GetById(Guid id)
         {
             return _weatherForecastService.GetById(id);
         }
 
+        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Forecaster")]
         [HttpPut]
-        public WeatherForecast Update(WeatherForecast objToUpdate)
+        public WeatherForecast Update([FromHeader]WeatherForecast objToUpdate)
         {
             return _weatherForecastService.Update(objToUpdate);
         }
 
+        [Authorize(Roles = "Administrator,Forecaster")]
         [HttpDelete("{id}")]
         public bool Remove(Guid id)
         {

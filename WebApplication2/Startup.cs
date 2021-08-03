@@ -1,4 +1,6 @@
 using BussinessLayer;
+using BussinessLayer.JWT;
+using BussinessLayer.Models;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using WebApplication;
 
 namespace WebApplication2
 {
@@ -22,8 +25,18 @@ namespace WebApplication2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)////
         {
-            services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-            services.AddScoped<IWeatherForecastRepository, WeatherForecastRepositoryEFCore>();
+            var smtpOptions = Configuration.GetSection("SmtpOptions");
+            services.Configure<SmtpOptions>(smtpOptions);
+
+            var hashSettings = Configuration.GetSection("HashSettings");
+            services.Configure<HashSettings>(hashSettings);
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
+            services.RegisterServices();
 
             services.AddControllers();
 
@@ -33,8 +46,12 @@ namespace WebApplication2
             };
 
             services.AddAutoMapper(assemblies);
+
             services.AddDbContext<EFCoreContext>(options
                 => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddAuthentication(appSettings);
+            services.AddAuthorization();
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +66,9 @@ namespace WebApplication2
 
             app.UseRouting();
 
+            app.UseMiddleware<FileLoggerMiddleware>();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
