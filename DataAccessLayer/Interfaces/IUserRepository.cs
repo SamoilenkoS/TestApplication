@@ -9,5 +9,6 @@ namespace DataAccessLayer.Interfaces
         IEnumerable<string> GetUserRolesById(Guid userId);
         UserDTO GetUserByAuthData(AuthenticationModel authenticationModel);
         bool RegisterUser(UserDTO userToRegister);
+        void AddUserRole(AddUserRoleModel addUserRoleModel);
     }
 }

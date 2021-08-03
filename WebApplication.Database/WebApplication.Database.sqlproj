@@ -65,7 +65,6 @@
     <Build Include="Tables\UserRoles.sql" />
     <Build Include="Tables\Users.sql" />
     <Build Include="Tables\WeatherForecasts.sql" />
-    <Build Include="Procedures\GetAllUserRoles.sql" />
     <PostDeploy Include="Post-Deployment\Script.PostDeployment_FillUsersAndRoles.sql" />
   </ItemGroup>
 </Project>

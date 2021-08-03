@@ -6,6 +6,7 @@ using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
 
 namespace BussinessLayer.Services
@@ -13,17 +14,20 @@ namespace BussinessLayer.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
         private readonly IMailService _mailService;
         private readonly IMailExchangerService _mailExchangerService;
         private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
+            IUserRolesRepository userRolesRepository,
             IMailService mailService,
             IMailExchangerService mailExchangerService,
             IMapper mapper)
         {
             _userRepository = userRepository;
+            _userRolesRepository = userRolesRepository;
             _mailService = mailService;
             _mailExchangerService = mailExchangerService;
             _mapper = mapper;
@@ -67,18 +71,50 @@ namespace BussinessLayer.Services
                 IsConfirmed = false,
                 UserId = userId
             });
+            var confirmationString = $"http://localhost:5050/users/confirm?message={messageToSend}";
 
             _mailExchangerService.SendMessage(
                 mail,
                 "Email confirmation",
-                $"http://localhost:5000/users/confirm?message={messageToSend}");
+                confirmationString);
+
+            WriteStringToFile(confirmationString);
         }
 
-        public bool ConfirmEmail(string message)
+        public ConfirmationResult ConfirmEmail(string message)
         {
-            var decrypted = EncryptionHelper.Decrypt(message);
-            var model = JsonSerializer.Deserialize<ConfirmationMessageModel>(decrypted);
-            return _mailService.ConfirmMail(model);
+            try
+            {
+                var decrypted = EncryptionHelper.Decrypt(message);
+                var model = JsonSerializer.Deserialize<ConfirmationMessageModel>(decrypted);
+                var isSuccessful = _mailService.ConfirmMail(model);
+                return new ConfirmationResult
+                {
+                    IsSuccessful = isSuccessful,
+                    UserId = model.UserId
+                };
+            }
+            catch(Exception ex)
+            {
+                return new ConfirmationResult { IsSuccessful = false };
+            }
+
+        }
+
+        public bool AddUserRole(AddUserRoleModel addUserRoleModel)
+        {
+            var result = _userRolesRepository.AddUserRole(addUserRoleModel);
+            _userRepository.AddUserRole(addUserRoleModel);
+
+            return result;
+        }
+
+        private void WriteStringToFile(string message)
+        {
+            using(var streamWriter = new StreamWriter("confirmationString.txt"))
+            {
+                streamWriter.WriteLine(message);
+            }
         }
     }
 }

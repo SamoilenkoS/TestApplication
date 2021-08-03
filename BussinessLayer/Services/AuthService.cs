@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BussinessLayer.Interfaces;
+using BussinessLayer.Models;
 using DataAccessLayer.Models;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace BussinessLayer.JWT.Services
@@ -21,7 +23,7 @@ namespace BussinessLayer.JWT.Services
             _mapper = mapper;
         }
 
-        public bool ConfirmEmail(string message)
+        public ConfirmationResult ConfirmEmail(string message)
         {
             return _userService.ConfirmEmail(message);
         }
@@ -41,7 +43,7 @@ namespace BussinessLayer.JWT.Services
                 userWithRoles = new UserWithRoles
                 {
                     UserId = user.Id,
-                    Roles = roles
+                    Roles = roles.ToList()
                 };
             }
 

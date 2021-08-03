@@ -63,7 +63,7 @@ namespace DataAccessLayer.Repositories
                 .Select(x => new UserWithRoles
                 {
                     UserId = x.Key,
-                    Roles = x.ToList().Select(x => x.Role)
+                    Roles = x.ToList().Select(x => x.Role).ToList()
                 }).ToList();
         }
 
@@ -79,6 +79,12 @@ namespace DataAccessLayer.Repositories
                 Roles = new List<string>(),
                 UserId = userId
             });
+        }
+
+        public void AddUserRole(AddUserRoleModel addUserRoleModel)
+        {
+            var user = _usersWithRoles.First(x => x.UserId == addUserRoleModel.UserId);
+            user.Roles.Add(addUserRoleModel.RoleTitle);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models;
+﻿using BussinessLayer.Models;
+using DataAccessLayer.Models;
 
 namespace BussinessLayer.JWT.Services
 {
@@ -6,6 +7,6 @@ namespace BussinessLayer.JWT.Services
     {
         ValidationResult Login(AuthenticationModel authenticationModel);
         bool RegisterUser(User userToRegister);
-        bool ConfirmEmail(string message);
+        ConfirmationResult ConfirmEmail(string message);
     }
 }

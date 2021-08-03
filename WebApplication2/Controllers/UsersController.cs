@@ -1,4 +1,5 @@
-﻿using BussinessLayer.JWT;
+﻿using BussinessLayer.Interfaces;
+using BussinessLayer.JWT;
 using BussinessLayer.JWT.Services;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,11 +13,13 @@ namespace WebApplication2.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
         private readonly ISessionService _sessionService;
 
-        public UsersController(IAuthService authService, ISessionService sessionService)
+        public UsersController(IAuthService authService, IUserService userService, ISessionService sessionService)
         {
             _authService = authService;
+            _userService = userService;
             _sessionService = sessionService;
         }
 
@@ -60,7 +63,17 @@ namespace WebApplication2.Controllers
         public IActionResult Confirm(string message)
         {
             var result = _authService.ConfirmEmail(message);
-            return Ok(result);
+            if (result.IsSuccessful)
+            {
+                _userService.AddUserRole(
+               new AddUserRoleModel
+               {
+                   UserId = result.UserId.Value,
+                   RoleTitle = "Administrator"
+               });
+            }
+
+            return Ok(result.IsSuccessful);
         }
     }
 }

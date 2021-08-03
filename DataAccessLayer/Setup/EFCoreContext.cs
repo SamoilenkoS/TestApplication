@@ -23,7 +23,8 @@ namespace DataAccessLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<UserRoles>()
+                .HasKey(x => new { x.UserId, x.RoleId });
         }
     }
 }

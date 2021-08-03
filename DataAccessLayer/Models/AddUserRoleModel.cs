@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace DataAccessLayer.Models
 {
-    public class UserWithRoles
+    public class AddUserRoleModel
     {
         public Guid UserId { get; set; }
-        public IList<string> Roles { get; set; }
+        public string RoleTitle { get; set; }
     }
 }
