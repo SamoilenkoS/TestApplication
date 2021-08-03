@@ -13,12 +13,12 @@ namespace DataAccessLayer.Models
         public string Login { get; set; }
 
         [Required]
-        [MinLength(5)]
+        [MinLength(2)]
         [MaxLength(50)]
         public string FirstName { get; set; }
 
         [Required]
-        [MinLength(5)]
+        [MinLength(2)]
         [MaxLength(50)]
         public string LastName { get; set; }
 

@@ -41,7 +41,7 @@ namespace WebApplication2.Controllers
         [Authorize(Roles = "Administrator")]
         [Authorize(Roles = "Forecaster")]
         [HttpPut]
-        public WeatherForecast Update(WeatherForecast objToUpdate)
+        public WeatherForecast Update([FromHeader]WeatherForecast objToUpdate)
         {
             return _weatherForecastService.Update(objToUpdate);
         }

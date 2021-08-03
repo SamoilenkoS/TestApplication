@@ -54,7 +54,7 @@ namespace BussinessLayer.Services
         public IEnumerable<string> GetUserRolesById(Guid userId)
             => _userRepository.GetUserRolesById(userId);
 
-        public void AddUserMail(Guid userId, string mail)
+        public void AddUserMail(Guid userId, string mail, string path)
         {
             var confirmationModel = new ConfirmationMessageModel
             {
@@ -71,7 +71,7 @@ namespace BussinessLayer.Services
                 IsConfirmed = false,
                 UserId = userId
             });
-            var confirmationString = $"http://localhost:5050/users/confirm?message={messageToSend}";
+            var confirmationString = $"{path}/users/confirm?message={messageToSend}";
 
             _mailExchangerService.SendMessage(
                 mail,

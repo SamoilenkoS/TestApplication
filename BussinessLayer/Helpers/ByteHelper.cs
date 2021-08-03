@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace BussinessLayer.Helpers
@@ -12,7 +11,7 @@ namespace BussinessLayer.Helpers
 
             foreach (var item in array)
             {
-                stringBuilder.Append($"{item}_");
+                stringBuilder.Append($"{item}{Consts.QuerySeparator}");
             }
 
             stringBuilder = stringBuilder.Remove(stringBuilder.Length - 1, 1);
@@ -22,7 +21,7 @@ namespace BussinessLayer.Helpers
 
         public static byte[] StringToByteArray(string stringWithBytes)
         {
-            var encryptedBytesString = stringWithBytes.Split('_');
+            var encryptedBytesString = stringWithBytes.Split(Consts.QuerySeparator);
             byte[] result = new byte[encryptedBytesString.Length];
             for (int i = 0; i < encryptedBytesString.Length; i++)
             {

@@ -10,7 +10,7 @@ namespace BussinessLayer.Interfaces
         IEnumerable<string> GetUserRolesById(Guid userId);
         User GetUserByLoginAndPassword(AuthenticationModel authenticationModel);
         bool RegisterUser(UserDTO userToRegister);
-        void AddUserMail(Guid userId, string mail);
+        void AddUserMail(Guid userId, string mail, string path);
         ConfirmationResult ConfirmEmail(string message);
         bool AddUserRole(AddUserRoleModel addUserRoleModel);
     }

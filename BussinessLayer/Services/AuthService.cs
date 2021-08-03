@@ -35,9 +35,9 @@ namespace BussinessLayer.JWT.Services
 
             var user = _userService.GetUserByLoginAndPassword(authenticationModel);
             UserWithRoles userWithRoles = null;
-            var userNotNull = user != null;
+            var isSuccessful = user != null;
 
-            if (userNotNull)
+            if (isSuccessful)
             {
                 var roles = _userService.GetUserRolesById(user.Id);
                 userWithRoles = new UserWithRoles
@@ -47,10 +47,14 @@ namespace BussinessLayer.JWT.Services
                 };
             }
 
-            return new ValidationResult(userNotNull, userWithRoles);
+            return new ValidationResult
+            {
+                IsSuccessful = isSuccessful,
+                UserWithRoles = userWithRoles
+            };
         }
 
-        public bool RegisterUser(User userToRegister)
+        public bool RegisterUser(User userToRegister, string path)
         {
             if (!IsPasswordValid(userToRegister.Password))
             {
@@ -65,7 +69,7 @@ namespace BussinessLayer.JWT.Services
             if (isRegistrationSuccessful &&
                 !string.IsNullOrEmpty(userToRegister.Email))
             {
-                _userService.AddUserMail(userDTO.Id, userToRegister.Email);
+                _userService.AddUserMail(userDTO.Id, userToRegister.Email, path);
             }
 
             return isRegistrationSuccessful;

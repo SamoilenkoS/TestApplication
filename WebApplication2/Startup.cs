@@ -66,6 +66,8 @@ namespace WebApplication2
 
             app.UseRouting();
 
+            app.UseMiddleware<FileLoggerMiddleware>();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

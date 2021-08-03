@@ -44,7 +44,7 @@ namespace WebApplication2.Controllers
         [HttpPost("register")]
         public IActionResult Register(User userToRegister)
         {
-            var registered = _authService.RegisterUser(userToRegister);
+            var registered = _authService.RegisterUser(userToRegister, $"{Request.Scheme}://{Request.Host}");
 
             if (registered)
             {

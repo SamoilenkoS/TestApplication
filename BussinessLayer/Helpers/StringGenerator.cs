@@ -12,7 +12,7 @@ namespace BussinessLayer.Helpers
             _random = new Random();
         }
 
-        public static string GenerateString(int minLength = 1, int maxLength = 20)
+        public static string GenerateString(int minLength = 10, int maxLength = 20)
         {
             var messageLength = _random.Next(minLength, maxLength);
             var generatedString = new StringBuilder(string.Empty);
@@ -27,7 +27,7 @@ namespace BussinessLayer.Helpers
         private static char GetRandomChar()
         {
             char result = ' ';
-            switch(_random.Next(1, 3))
+            switch(_random.Next(1, 5))
             {
                 case 1:
                     result = (char)_random.Next('A', 'Z');
@@ -37,6 +37,12 @@ namespace BussinessLayer.Helpers
                     break;
                 case 3:
                     result = (char)_random.Next('0', '9');
+                    break;
+                case 4:
+                    result = (char)_random.Next('!', '/');
+                    break;
+                case 5:
+                    result = (char)_random.Next(':', '@');
                     break;
             }
 
