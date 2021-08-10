@@ -24,7 +24,7 @@ namespace WebApplication
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IHashService, HashService>();
-            services.AddScoped<IMailExchangerService, MailExchangerServiceMoq>();//MailExchangerService
+            services.AddScoped<IMailExchangerService, MailExchangerService>();//
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IUserRolesRepository, UserRolesRepository>();
