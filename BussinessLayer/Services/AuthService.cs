@@ -4,6 +4,7 @@ using BussinessLayer.Models;
 using DataAccessLayer.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.JWT.Services
 {
@@ -28,7 +29,7 @@ namespace BussinessLayer.JWT.Services
             return _userService.ConfirmEmail(message);
         }
 
-        public ValidationResult Login(AuthenticationModel authenticationModel)
+        public async Task<ValidationResult> Login(AuthenticationModel authenticationModel)
         {
             var hashedPassword = _hashService.HashString(authenticationModel.Password);
             authenticationModel.Password = hashedPassword;
@@ -39,7 +40,7 @@ namespace BussinessLayer.JWT.Services
 
             if (isSuccessful)
             {
-                var roles = _userService.GetUserRolesById(user.Id);
+                var roles = await _userService.GetUserRolesById(user.Id);
                 userWithRoles = new UserWithRoles
                 {
                     UserId = user.Id,

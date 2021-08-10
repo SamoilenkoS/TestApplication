@@ -2,16 +2,17 @@
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<string> GetUserRolesById(Guid userId);
+        Task<IEnumerable<string>> GetUserRolesById(Guid userId);
         User GetUserByLoginAndPassword(AuthenticationModel authenticationModel);
         bool RegisterUser(UserDTO userToRegister);
         void AddUserMail(Guid userId, string mail, string path);
         ConfirmationResult ConfirmEmail(string message);
-        bool AddUserRole(AddUserRoleModel addUserRoleModel);
+        Task<bool> AddUserRole(AddUserRoleModel addUserRoleModel);
     }
 }

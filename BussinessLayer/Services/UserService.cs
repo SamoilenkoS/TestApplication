@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Services
 {
@@ -51,8 +52,8 @@ namespace BussinessLayer.Services
         public User GetUserByLoginAndPassword(AuthenticationModel authenticationModel)
             => _mapper.Map<User>(_userRepository.GetUserByAuthData(authenticationModel));
 
-        public IEnumerable<string> GetUserRolesById(Guid userId)
-            => _userRepository.GetUserRolesById(userId);
+        public async Task<IEnumerable<string>> GetUserRolesById(Guid userId)
+            => await _userRolesRepository.GetUserRolesById(userId);
 
         public void AddUserMail(Guid userId, string mail, string path)
         {
@@ -101,13 +102,8 @@ namespace BussinessLayer.Services
 
         }
 
-        public bool AddUserRole(AddUserRoleModel addUserRoleModel)
-        {
-            var result = _userRolesRepository.AddUserRole(addUserRoleModel);
-            _userRepository.AddUserRole(addUserRoleModel);
-
-            return result;
-        }
+        public async Task<bool> AddUserRole(AddUserRoleModel addUserRoleModel)
+            => await _userRolesRepository.AddUserRole(addUserRoleModel);
 
         private void WriteStringToFile(string message)
         {

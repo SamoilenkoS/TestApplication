@@ -47,6 +47,12 @@ namespace WebApplication2
 
             services.AddAutoMapper(assemblies);
 
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("Redis");
+                options.InstanceName = "RedisDemo";
+            });
+
             services.AddDbContext<EFCoreContext>(options
                 => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 

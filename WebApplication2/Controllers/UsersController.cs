@@ -4,6 +4,7 @@ using BussinessLayer.JWT.Services;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebApplication2.Controllers
 {
@@ -25,19 +26,18 @@ namespace WebApplication2.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public string Login(AuthenticationModel authenticationModel)
+        public async Task<IActionResult> Login(AuthenticationModel authenticationModel)
         {
-            var validationResult = _authService.Login(authenticationModel);
+            var validationResult = await _authService.Login(authenticationModel);
 
             if (validationResult.IsSuccessful == false)
             {
-                BadRequest("Uncorrect login or password");
-                return string.Empty;
+                return BadRequest("Uncorrect login or password");
             }
 
             var token = _sessionService.CreateAuthToken(validationResult.UserWithRoles);
 
-            return token;
+            return Ok(token);
         }
 
         [AllowAnonymous]
@@ -48,11 +48,12 @@ namespace WebApplication2.Controllers
 
             if (registered)
             {
-                return Ok(Login(new AuthenticationModel
-                {
-                    Login = userToRegister.Login,
-                    Password = userToRegister.Password
-                }));
+                return Ok(
+                    Login(new AuthenticationModel
+                    {
+                        Login = userToRegister.Login,
+                        Password = userToRegister.Password
+                    }));
             }
 
             return BadRequest("Invalid registration data");
@@ -60,17 +61,17 @@ namespace WebApplication2.Controllers
 
         [AllowAnonymous]
         [HttpGet("confirm")]
-        public IActionResult Confirm(string message)
+        public async Task<IActionResult> Confirm(string message)
         {
             var result = _authService.ConfirmEmail(message);
             if (result.IsSuccessful)
             {
-                _userService.AddUserRole(
-               new AddUserRoleModel
-               {
-                   UserId = result.UserId.Value,
-                   RoleTitle = "Administrator"
-               });
+                await _userService.AddUserRole(
+                    new AddUserRoleModel
+                    {
+                        UserId = result.UserId.Value,
+                        RoleTitle = "Administrator"
+                    });
             }
 
             return Ok(result.IsSuccessful);
