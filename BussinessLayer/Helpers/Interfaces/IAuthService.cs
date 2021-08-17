@@ -1,13 +1,14 @@
-﻿using BussinessLayer.Models;
+﻿using System;
 using DataAccessLayer.Models;
 using System.Threading.Tasks;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.JWT.Services
+namespace BusinessLayer.Helpers.Interfaces
 {
     public interface IAuthService
     {
         Task<ValidationResult> Login(AuthenticationModel authenticationModel);
-        bool RegisterUser(User userToRegister, string path);
+        Task<Guid> RegisterUser(User userToRegister, string path);
         ConfirmationResult ConfirmEmail(string message);
     }
 }

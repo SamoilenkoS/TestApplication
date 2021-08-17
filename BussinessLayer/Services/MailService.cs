@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BussinessLayer.Interfaces;
-using BussinessLayer.Models;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 
-namespace BussinessLayer.Services
+namespace BusinessLayer.Services
 {
     public class MailService : IMailService
     {

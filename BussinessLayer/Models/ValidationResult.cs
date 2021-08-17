@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Models;
 
-namespace BussinessLayer.JWT
+namespace BusinessLayer.Models
 {
     public class ValidationResult
     {

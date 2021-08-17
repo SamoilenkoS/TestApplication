@@ -1,8 +1,4 @@
 ﻿using BussinessLayer;
-using BussinessLayer.Interfaces;
-using BussinessLayer.JWT;
-using BussinessLayer.JWT.Services;
-using BussinessLayer.Services;
 using DataAccessLayer;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
@@ -10,6 +6,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
+using BusinessLayer.Services;
 
 namespace WebApplication
 {
@@ -28,6 +27,8 @@ namespace WebApplication
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IUserRolesRepository, UserRolesRepository>();
+            services.AddScoped<IEncryptionService, EncryptionService>();
+            services.AddScoped<IConnectionForDb, ConnectionForDb>();
         }
 
         public static void AddAuthentication(this IServiceCollection services, AppSettings appSettings)

@@ -6,8 +6,10 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using DataAccessLayer.Models;
 using System.Linq;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.JWT
+namespace BusinessLayer.Services
 {
     public class SessionService : ISessionService
     {

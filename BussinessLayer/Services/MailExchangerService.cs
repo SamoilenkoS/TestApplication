@@ -1,10 +1,10 @@
-﻿using BussinessLayer.Interfaces;
-using BussinessLayer.Models;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.Services
+namespace BusinessLayer.Services
 {
     public class MailExchangerService : IMailExchangerService
     {

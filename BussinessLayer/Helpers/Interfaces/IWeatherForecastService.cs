@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using BusinessLayer.Models;
 
-namespace BussinessLayer
+namespace BusinessLayer.Helpers.Interfaces
 {
     public interface IWeatherForecastService
     {

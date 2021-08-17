@@ -1,12 +1,13 @@
-﻿using AutoMapper;
-using BussinessLayer.Interfaces;
-using BussinessLayer.Models;
+﻿using System;
+using AutoMapper;
 using DataAccessLayer.Models;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.JWT.Services
+namespace BusinessLayer.Services
 {
     public class AuthService : IAuthService
     {
@@ -55,25 +56,25 @@ namespace BussinessLayer.JWT.Services
             };
         }
 
-        public bool RegisterUser(User userToRegister, string path)
+        public async Task<Guid> RegisterUser(User userToRegister, string path)
         {
             if (!IsPasswordValid(userToRegister.Password))
             {
-                return false;
+                return Guid.Empty;
             }
 
             var userDTO = _mapper.Map<UserDTO>(userToRegister);
             userDTO.Password = _hashService.HashString(userToRegister.Password);
 
-            var isRegistrationSuccessful = _userService.RegisterUser(userDTO);
+            var leadGuid = await _userService.RegisterUser(userDTO);
 
-            if (isRegistrationSuccessful &&
+            if (leadGuid != Guid.Empty &&
                 !string.IsNullOrEmpty(userToRegister.Email))
             {
                 _userService.AddUserMail(userDTO.Id, userToRegister.Email, path);
             }
 
-            return isRegistrationSuccessful;
+            return leadGuid;
         }
 
         private bool IsPasswordValid(string password)

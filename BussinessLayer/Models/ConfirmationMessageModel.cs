@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BussinessLayer.Models
+namespace BusinessLayer.Models
 {
     public class ConfirmationMessageModel
     {

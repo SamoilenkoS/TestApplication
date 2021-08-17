@@ -1,7 +1,7 @@
-﻿using BussinessLayer.Models;
+﻿using BusinessLayer.Models;
 using DataAccessLayer.Models;
 
-namespace BussinessLayer.Interfaces
+namespace BusinessLayer.Helpers.Interfaces
 {
     public interface IMailService
     {

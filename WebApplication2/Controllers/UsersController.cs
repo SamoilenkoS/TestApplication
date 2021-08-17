@@ -1,10 +1,9 @@
-﻿using BussinessLayer.Interfaces;
-using BussinessLayer.JWT;
-using BussinessLayer.JWT.Services;
+﻿using System;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using BusinessLayer.Helpers.Interfaces;
 
 namespace WebApplication2.Controllers
 {
@@ -42,18 +41,13 @@ namespace WebApplication2.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register(User userToRegister)
+        public async Task<IActionResult> Register(User userToRegister)
         {
-            var registered = _authService.RegisterUser(userToRegister, $"{Request.Scheme}://{Request.Host}");
+            var leadGuid = await _authService.RegisterUser(userToRegister, $"{Request.Scheme}://{Request.Host}");
 
-            if (registered)
+            if (leadGuid != Guid.Empty)
             {
-                return Ok(
-                    Login(new AuthenticationModel
-                    {
-                        Login = userToRegister.Login,
-                        Password = userToRegister.Password
-                    }));
+                return Ok(userToRegister.Login);
             }
 
             return BadRequest("Invalid registration data");

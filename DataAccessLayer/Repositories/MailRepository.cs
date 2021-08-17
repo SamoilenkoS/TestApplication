@@ -14,9 +14,9 @@ namespace DataAccessLayer.Repositories
 
         public bool ConfirmMail(EmailDTO email)
         {
-            var entity = _dbContext.Emails.Where(x =>
-                x.UserId == email.UserId && 
-                x.ConfirmationMessage == email.ConfirmationMessage).FirstOrDefault();
+            var entity = _dbContext.Emails
+                .FirstOrDefault(x => x.UserId == email.UserId &&
+                                x.ConfirmationMessage == email.ConfirmationMessage);
 
             if (entity != null)
             {

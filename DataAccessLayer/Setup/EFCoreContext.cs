@@ -11,9 +11,9 @@ namespace DataAccessLayer
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
 
-        public EFCoreContext(DbContextOptions<EFCoreContext> options) : base(options)
+        public EFCoreContext(DbContextOptions options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

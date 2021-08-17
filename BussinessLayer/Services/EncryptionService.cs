@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using BusinessLayer.Helpers;
+using BusinessLayer.Helpers.Interfaces;
 
-namespace BussinessLayer.Helpers
+namespace BusinessLayer.Services
 {
-    public static class EncryptionHelper
+    public class EncryptionService : IEncryptionService
     {
         private static readonly byte[] Key;
         private static readonly byte[] IV;
 
-        static EncryptionHelper()
+        static EncryptionService()
         {
             Key = new byte[]
             { 121, 112, 91, 42, 61, 189, 141, 28, 109, 42, 25, 187,
@@ -21,7 +23,7 @@ namespace BussinessLayer.Helpers
                 16, 121, 74, 75, 221, 4, 30, 145 };
         }
 
-        public static string Encrypt(string plainText)
+        public string Encrypt(string plainText)
         {
             if (plainText == null || plainText.Length <= 0)
             {
@@ -51,7 +53,7 @@ namespace BussinessLayer.Helpers
             return ByteHelper.ByteArrayToString(encryptedByteArray);
         }
 
-        public static string Decrypt(string encrypted)
+        public string Decrypt(string encrypted)
         {
             var cipherText = ByteHelper.StringToByteArray(encrypted);
 
@@ -68,9 +70,9 @@ namespace BussinessLayer.Helpers
 
                 using (var memoryStream = new MemoryStream(cipherText))
                 {
-                    using(var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                     {
-                        using(var streamReader = new StreamReader(cryptoStream))
+                        using (var streamReader = new StreamReader(cryptoStream))
                         {
                             plainText = streamReader.ReadToEnd();
                         }

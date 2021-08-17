@@ -1,4 +1,4 @@
-﻿namespace BussinessLayer.Interfaces
+﻿namespace BusinessLayer.Helpers.Interfaces
 {
     public interface IMailExchangerService
     {

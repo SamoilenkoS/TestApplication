@@ -39,6 +39,13 @@ namespace DataAccessLayer.Repositories
             return isAdded;
         }
 
+        public async Task<IEnumerable<string>> GetUserRolesByIdAsync(Guid userId)
+        {
+            var usersWithRoles = await GetAllUserRolesFromCache();
+
+            return usersWithRoles.FirstOrDefault(x => x.UserId == userId)?.Roles ?? new List<string>();
+        }
+
         private async Task AddUserRoleToCache(AddUserRoleModel addUserRoleModel)
         {
             var usersWithRoles = await GetAllUserRolesFromCache();
@@ -60,13 +67,6 @@ namespace DataAccessLayer.Repositories
             }
 
             await _cache.SetRecordAsync(nameof(UserWithRoles), usersWithRoles);
-        }
-
-        public async Task<IEnumerable<string>> GetUserRolesById(Guid userId)
-        {
-            var usersWithRoles = await GetAllUserRolesFromCache();
-
-            return usersWithRoles.FirstOrDefault(x => x.UserId == userId)?.Roles ?? new List<string>();
         }
 
         private async Task<IList<UserWithRoles>> GetAllUserRolesFromCache()

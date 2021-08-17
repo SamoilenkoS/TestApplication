@@ -8,6 +8,6 @@ namespace DataAccessLayer.Interfaces
     public interface IUserRolesRepository
     {
         Task<bool> AddUserRole(AddUserRoleModel addUserRoleModel);
-        Task<IEnumerable<string>> GetUserRolesById(Guid userId);
+        Task<IEnumerable<string>> GetUserRolesByIdAsync(Guid userId);
     }
 }

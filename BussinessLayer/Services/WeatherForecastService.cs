@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 using DataAccessLayer;
 
-namespace BussinessLayer
+namespace BusinessLayer.Services
 {
     public class WeatherForecastService : IWeatherForecastService
     {

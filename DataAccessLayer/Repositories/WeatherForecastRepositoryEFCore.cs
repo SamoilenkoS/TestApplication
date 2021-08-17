@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.Repositories
 {
     public class WeatherForecastRepositoryEFCore : IWeatherForecastRepository
     {

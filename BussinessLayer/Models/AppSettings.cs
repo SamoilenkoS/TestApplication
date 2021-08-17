@@ -1,4 +1,4 @@
-﻿namespace BussinessLayer.JWT
+﻿namespace BusinessLayer.Models
 {
     public class AppSettings
     {

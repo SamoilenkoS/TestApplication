@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using BussinessLayer.Models;
+using BusinessLayer.Models;
 using DataAccessLayer.Models;
 
-namespace BussinessLayer.Profiles
+namespace BusinessLayer.Profiles
 {
     public class EmailProfile : Profile
     {

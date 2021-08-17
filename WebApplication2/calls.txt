@@ -1,8 +1,0 @@
-httplocalhost:5050/weatherforecast/?param=10
-httplocalhost:5050/users/login
-httplocalhost:5050/weatherforecast/?param=10
-httplocalhost:5050/weatherforecast/?param=10
-httplocalhost:5050/favicon.ico
-httplocalhost:5050/users/register
-httplocalhost:5050/users/register
-httppublicapi.maxicapital.loc:5050/users/register

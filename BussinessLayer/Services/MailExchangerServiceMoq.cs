@@ -1,6 +1,6 @@
-﻿using BussinessLayer.Interfaces;
+﻿using BusinessLayer.Helpers.Interfaces;
 
-namespace BussinessLayer.Services
+namespace BusinessLayer.Services
 {
     public class MailExchangerServiceMoq : IMailExchangerService
     {

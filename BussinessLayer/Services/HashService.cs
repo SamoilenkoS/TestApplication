@@ -1,10 +1,10 @@
-﻿using BussinessLayer.Interfaces;
-using BussinessLayer.Models;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using System;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.Services
+namespace BusinessLayer.Services
 {
     public class HashService : IHashService
     {

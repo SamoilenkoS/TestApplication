@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
-using BussinessLayer.Helpers;
-using BussinessLayer.Interfaces;
-using BussinessLayer.Models;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BusinessLayer.Helpers;
+using BusinessLayer.Helpers.Interfaces;
+using BusinessLayer.Models;
 
-namespace BussinessLayer.Services
+namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {
+        private readonly IEncryptionService _encryptionService;
         private readonly IUserRepository _userRepository;
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IMailService _mailService;
@@ -21,12 +21,14 @@ namespace BussinessLayer.Services
         private readonly IMapper _mapper;
 
         public UserService(
+            IEncryptionService encryptionService,
             IUserRepository userRepository,
             IUserRolesRepository userRolesRepository,
             IMailService mailService,
             IMailExchangerService mailExchangerService,
             IMapper mapper)
         {
+            _encryptionService = encryptionService;
             _userRepository = userRepository;
             _userRolesRepository = userRolesRepository;
             _mailService = mailService;
@@ -34,18 +36,18 @@ namespace BussinessLayer.Services
             _mapper = mapper;
         }
 
-        public bool RegisterUser(UserDTO userToRegister)
+        public async Task<Guid> RegisterUser(UserDTO userToRegister)
         {
             try
             {
                 userToRegister.Id = Guid.NewGuid();
-                _userRepository.RegisterUser(userToRegister);
+                await _userRepository.RegisterUser(userToRegister);
 
-                return true;
+                return userToRegister.Id;
             }
             catch (Exception ex)
             {
-                return false;
+                return Guid.Empty;
             }
         }
 
@@ -53,7 +55,7 @@ namespace BussinessLayer.Services
             => _mapper.Map<User>(_userRepository.GetUserByAuthData(authenticationModel));
 
         public async Task<IEnumerable<string>> GetUserRolesById(Guid userId)
-            => await _userRolesRepository.GetUserRolesById(userId);
+            => await _userRolesRepository.GetUserRolesByIdAsync(userId);
 
         public void AddUserMail(Guid userId, string mail, string path)
         {
@@ -63,7 +65,7 @@ namespace BussinessLayer.Services
                 UserId = userId
             };
             var modelToSerialize = JsonSerializer.Serialize(confirmationModel);
-            var messageToSend = EncryptionHelper.Encrypt(modelToSerialize);
+            var messageToSend = _encryptionService.Encrypt(modelToSerialize);
 
             _mailService.SaveMailAddress(new EmailDTO
             {
@@ -78,15 +80,13 @@ namespace BussinessLayer.Services
                 mail,
                 "Email confirmation",
                 confirmationString);
-
-            WriteStringToFile(confirmationString);
         }
 
         public ConfirmationResult ConfirmEmail(string message)
         {
             try
             {
-                var decrypted = EncryptionHelper.Decrypt(message);
+                var decrypted = _encryptionService.Decrypt(message);
                 var model = JsonSerializer.Deserialize<ConfirmationMessageModel>(decrypted);
                 var isSuccessful = _mailService.ConfirmMail(model);
                 return new ConfirmationResult
@@ -104,13 +104,5 @@ namespace BussinessLayer.Services
 
         public async Task<bool> AddUserRole(AddUserRoleModel addUserRoleModel)
             => await _userRolesRepository.AddUserRole(addUserRoleModel);
-
-        private void WriteStringToFile(string message)
-        {
-            using(var streamWriter = new StreamWriter("confirmationString.txt"))
-            {
-                streamWriter.WriteLine(message);
-            }
-        }
     }
 }

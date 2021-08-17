@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace BussinessLayer.Helpers
+namespace BusinessLayer.Helpers
 {
     public static class StringGenerator
     {

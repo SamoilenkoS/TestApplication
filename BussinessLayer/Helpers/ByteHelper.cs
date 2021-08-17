@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using BussinessLayer;
 
-namespace BussinessLayer.Helpers
+namespace BusinessLayer.Helpers
 {
     public static class ByteHelper
     {

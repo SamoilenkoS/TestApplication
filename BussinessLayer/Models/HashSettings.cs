@@ -1,4 +1,4 @@
-﻿namespace BussinessLayer.Models
+﻿namespace BusinessLayer.Models
 {
     public class HashSettings
     {

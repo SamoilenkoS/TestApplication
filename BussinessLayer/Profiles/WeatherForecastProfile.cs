@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models;
 using DataAccessLayer;
 
-namespace BussinessLayer
+namespace BusinessLayer.Profiles
 {
     public class WeatherForecastProfile : Profile
     {

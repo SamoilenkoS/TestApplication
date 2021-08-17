@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
@@ -21,12 +22,10 @@ namespace DataAccessLayer.Repositories
                 x.Password == authenticationModel.Password);
         }
 
-        public bool RegisterUser(UserDTO userToRegister)
+        public async Task RegisterUser(UserDTO userToRegister)
         {
-            _dbContext.Users.Add(userToRegister);
-            _dbContext.SaveChanges();
-
-            return true;
+            await _dbContext.Users.AddAsync(userToRegister);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

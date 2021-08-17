@@ -1,6 +1,6 @@
 using System;
 
-namespace BussinessLayer
+namespace BusinessLayer.Models
 {
     public class WeatherForecast
     {

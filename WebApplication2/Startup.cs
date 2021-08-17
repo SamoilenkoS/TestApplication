@@ -1,17 +1,13 @@
-using BussinessLayer;
-using BussinessLayer.JWT;
-using BussinessLayer.Models;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Reflection;
-using WebApplication;
+using BusinessLayer.Models;
+using BusinessLayer.Profiles;
 
-namespace WebApplication2
+namespace WebApplication
 {
     public class Startup
     {
@@ -22,7 +18,6 @@ namespace WebApplication2
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)////
         {
             var smtpOptions = Configuration.GetSection("SmtpOptions");
@@ -53,26 +48,25 @@ namespace WebApplication2
                 options.InstanceName = "RedisDemo";
             });
 
+            //services.AddDbContext<EFCoreContext>(options => options.UseSqlite("Filename=:memory:"));
+            var desc = services.BuildServiceProvider();
+            var dbConnection = (IConnectionForDb)desc.GetService(typeof(IConnectionForDb));
+
             services.AddDbContext<EFCoreContext>(options
-                => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+                => options.UseSqlServer(dbConnection.DefaultConnection));
 
             services.AddAuthentication(appSettings);
             services.AddAuthorization();
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseMiddleware<FileLoggerMiddleware>();
+            //app.UseMiddleware<FileLoggerMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

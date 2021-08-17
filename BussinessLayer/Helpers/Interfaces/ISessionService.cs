@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Models;
 
-namespace BussinessLayer.JWT
+namespace BusinessLayer.Helpers.Interfaces
 {
     public interface ISessionService
     {
