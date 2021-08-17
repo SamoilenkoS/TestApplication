@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace WebApplication.IntegrationTests
