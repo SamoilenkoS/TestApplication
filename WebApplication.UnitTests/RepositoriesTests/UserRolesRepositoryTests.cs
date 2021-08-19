@@ -24,7 +24,7 @@ namespace WebApplication.UnitTests.RepositoriesTests
         public UserRolesRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<EFCoreContext>()
-                .UseInMemoryDatabase(databaseName: "MovieListDatabase").Options;
+                .UseInMemoryDatabase(databaseName: "WebAppDB").Options;
             _cacheMock = new Mock<IDistributedCache>();
             _dbContext = new EFCoreContext(options);
 
@@ -71,9 +71,8 @@ namespace WebApplication.UnitTests.RepositoriesTests
             });
             await _dbContext.SaveChangesAsync();
 
-            var temp = await _dbContext.Users.ToListAsync();
-
-            var actualResult = await _userRolesRepository.GetUserRolesByIdAsync(userId);
+            var actualResult = await _userRolesRepository
+              .GetUserRolesByIdAsync(userId);
 
             actualResult.Should().ContainEquivalentOf(testRole.Role);
         }
@@ -105,8 +104,6 @@ namespace WebApplication.UnitTests.RepositoriesTests
             await _dbContext.Users.AddAsync(user);
             await _dbContext.Roles.AddAsync(testRole);
             await _dbContext.SaveChangesAsync();
-
-            var temp = await _dbContext.Users.ToListAsync();
 
             var actualResult = await _userRolesRepository.GetUserRolesByIdAsync(userId);
 

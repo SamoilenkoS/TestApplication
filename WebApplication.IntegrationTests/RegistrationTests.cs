@@ -25,13 +25,15 @@ namespace WebApplication.IntegrationTests
             _client = fixture.Client;
         }
 
-        public async Task DisposeAsync()
+        public Task DisposeAsync()
         {
-            await Task.CompletedTask;
+            _dbContext.Database.EnsureDeleted();
+            return Task.CompletedTask;
         }
 
         public Task InitializeAsync()
         {
+            _dbContext.Database.EnsureCreated();
             return Task.CompletedTask;
         }
 
@@ -44,7 +46,8 @@ namespace WebApplication.IntegrationTests
                 .Create();
             var json = JsonConvert.SerializeObject(user);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("users/register", data);
+
+            await _client.PostAsync("users/register", data);
 
             _dbContext.Users.Should().ContainEquivalentOf(
                 new

@@ -5,7 +5,7 @@ using BusinessLayer.Helpers.Interfaces;
 using BusinessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApplication2.Controllers
+namespace WebApplication.Controllers
 {
     [Authorize]
     [ApiController]

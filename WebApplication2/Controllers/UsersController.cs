@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BusinessLayer.Helpers.Interfaces;
 
-namespace WebApplication2.Controllers
+namespace WebApplication.Controllers
 {
     [Authorize]
     [ApiController]
@@ -69,6 +69,13 @@ namespace WebApplication2.Controllers
             }
 
             return Ok(result.IsSuccessful);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task TestPost(string firstName, string lastName)
+        {
+            var t = firstName + lastName;
         }
     }
 }

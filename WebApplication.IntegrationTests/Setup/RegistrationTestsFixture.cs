@@ -28,19 +28,15 @@ namespace Registrations.Api.IntegrationTests.Infrastructure
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    //services.Configure<IConnectionForDb>(o =>
-                    //{
-                    //    o.DefaultConnection =
-                    //        $"Server=(localdb)\\mssqllocaldb;Database=test_{Guid.NewGuid()};Trusted_Connection=True;MultipleActiveResultSets=true";
-                    //});
                     var descriptor = services.SingleOrDefault(
                         d => d.ServiceType ==
                              typeof(DbContextOptions<EFCoreContext>));
+                    services.Remove(descriptor);
+
                     var serviceProvider = new ServiceCollection()
                         .AddEntityFrameworkSqlServer()
                         .BuildServiceProvider();
 
-                    services.Remove(descriptor);
                     services.AddDbContext<EFCoreContext>(options
                         => {
                         options.UseSqlServer(
@@ -56,13 +52,6 @@ namespace Registrations.Api.IntegrationTests.Infrastructure
             Database = _factory.GetService<EFCoreContext>();
 
             Fixture = new Fixture();
-        }
-
-        public T GetService<T>()
-        {
-            
-
-            return _factory.Services.GetRequiredService<T>();
         }
 
         public void Dispose()
