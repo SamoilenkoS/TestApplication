@@ -7,7 +7,6 @@ using BusinessLayer.Helpers.Interfaces;
 
 namespace WebApplication.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -72,7 +71,7 @@ namespace WebApplication.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         public async Task TestPost(string firstName, string lastName)
         {
             var t = firstName + lastName;

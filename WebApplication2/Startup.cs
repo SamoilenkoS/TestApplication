@@ -55,6 +55,19 @@ namespace WebApplication
             services.AddDbContext<EFCoreContext>(options
                 => options.UseSqlServer(dbConnection.DefaultConnection));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder
+                        .AllowCredentials()
+                        .WithOrigins(
+                            "http://localhost:8084")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddAuthentication(appSettings);
             services.AddAuthorization();
         }
@@ -62,6 +75,7 @@ namespace WebApplication
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
